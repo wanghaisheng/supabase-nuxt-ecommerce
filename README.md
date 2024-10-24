@@ -5,43 +5,43 @@ A modern e-commerce platform built with Vue.js, Nuxt.js, and Supabase, offering 
 ## ⭐ Features
 
 - **🔄 Real-time Updates**
-  - 📊 Live inventory tracking
-  - 💰 Instant price updates
-  - 🛒 Real-time cart synchronization
-  - 📦 Live order status tracking (In progress)
+  - Live inventory tracking
+  - Instant price updates
+  - Real-time cart synchronization
+  - Live order status tracking (In progress)
 
 - **🔐 Secure Authentication**
-  - 📧 Email/password authentication
-  - 🌐 Social media login integration (In progress)
-  - 👥 Role-based access control
-  - 🔒 Secure session management 
+  - Email/password authentication
+  - Social media login integration (In progress)
+  - Role-based access control
+  - Secure session management 
 
 - **📱 Responsive Design**
-  - 🌐 Cross-browser compatibility
-  - 💻 Optimized for all screen sizes
-  - 👆 Touch-friendly interface
+  - Cross-browser compatibility
+  - Optimized for all screen sizes
+  - Touch-friendly interface
 
 ## 🛠️ Tech Stack
 
 - **🎨 Frontend**
-  - ⚡ Vue.js 3
-  - 🔰 Nuxt.js 3
-  - 🎯 Tailwind CSS
-  - 📦 Pinia (State Management)
-  - 📘 Typescript
+  - Vue.js 3
+  - Nuxt.js 3
+  - Tailwind CSS
+  - Pinia (State Management)
+  - Typescript
 
 - **⚙️ Backend**
-  - 🔥 Supabase
-  - 🐘 PostgreSQL
-  - 🛡️ Row Level Security
-  - 🔄 Real-time subscriptions
+  - Supabase
+  - PostgreSQL
+  - Row Level Security
+  - Real-time subscriptions
 
 ## 📋 Prerequisites
 
-- 📌 Node.js (v16 or higher)
-- 📦 npm
-- 🗄️ Supabase account
-- 🔄 Git
+- Node.js (v18 or higher)
+- npm
+- Supabase account
+- Git
 
 ## 🚀 Getting Started
 
@@ -73,14 +73,14 @@ npm run dev
 ├── 📂 .nuxt/                  # Build directory
 ├── 📂 assets/                 # Uncompiled assets (images, styles, etc.)
 ├── 📂 components/             # Vue components
-│   ├── 🛒 cart/              # Shopping cart components
-│   ├── 📑 category/          # Category navigation and listing
-│   ├── 🔄 common/            # Shared/reusable components
-│   ├── 💬 dialog/            # Modal and dialog components
-│   ├── 📦 product/           # Product-related components
-│   ├── 🏗️ section/           # Page section components
-│   ├── 🎨 ui/                # Base UI components
-│   └── ❤️ wishlist/          # Wishlist feature components
+│   ├── cart/              # Shopping cart components
+│   ├── category/          # Category navigation and listing
+│   ├── common/            # Shared/reusable components
+│   ├── dialog/            # Modal and dialog components
+│   ├── product/           # Product-related components
+│   ├── section/           # Page section components
+│   ├── ui/                # Base UI components
+│   └── wishlist/          # Wishlist feature components
 ├── 🎣 composables/           # Vue composables (hooks)
 ├── 📐 layouts/               # Page layouts
 ├── 📚 lib/                   # Utility functions and core logic
@@ -103,11 +103,7 @@ npm run dev
 
 ### 🗄️ Database Setup
 
-1. Create necessary tables in Supabase:
-   - 📦 products
-   - 📋 orders
-   - 👥 users
-   - 🛒 cart_items
+1. Run the sql dump file
 
 2. 🔒 Enable Row Level Security (RLS) policies
 
@@ -143,11 +139,11 @@ npm run test
 
 ## 🤝 Contributing
 
-1. 🔀 Fork the repository
-2. 🌿 Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. 💾 Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. 📤 Push to the branch (`git push origin feature/AmazingFeature`)
-5. 📫 Open a Pull Request
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📜 License
 
@@ -155,10 +151,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- 💚 Vue.js team
-- 💚 Nuxt.js team
-- 🔥 Supabase team
-- 👥 All contributors
+- Vue.js team
+- Nuxt.js team
+- Supabase team
+- All contributors
 
 ---
 Made with ❤️ by Phan Hai
