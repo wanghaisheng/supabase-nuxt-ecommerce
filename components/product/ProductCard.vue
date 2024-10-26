@@ -86,6 +86,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { v4 as uuidv4 } from 'uuid'
 
 type Product = Tables<'products'> & {
   vendors: { name: string }
@@ -148,6 +149,7 @@ function addToCart() {
     productId: props.product.id,
     quantity: 1,
     cartId: null,
+    id: uuidv4(),
   }
   cartStore.addToCart(cartItem)
   isLoading.value = false
