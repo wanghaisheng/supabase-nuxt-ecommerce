@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Toaster></Toaster>
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
@@ -7,6 +8,7 @@
 </template>
 
 <script lang="ts" setup>
+import Toaster from './components/ui/toast/Toaster.vue'
 useHead({
   titleTemplate: (titleChunk) => {
     return titleChunk ? `Vinylata | ${titleChunk}` : 'Vinylata'
