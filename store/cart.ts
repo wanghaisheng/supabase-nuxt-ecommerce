@@ -1,3 +1,4 @@
+import { useToast } from '~/components/ui/toast'
 import type { TablesInsert } from '~/types/database.types'
 
 type CartItem = TablesInsert<'cartItem'>
@@ -10,6 +11,7 @@ export const useCartStore = defineStore(
     const cart = ref<Cart | null>(null)
     const user = useSupabaseUser()
     const supabase = useSupabaseClient()
+    const { toast } = useToast()
     const {
       deleteCartItems,
       deleteCart,
@@ -34,16 +36,22 @@ export const useCartStore = defineStore(
         cart.value.totalprice = calculateTotalPrice(cartItems.value)
         cart.value.updatedat = new Date().toISOString()
 
-        // Update cart in database
-        await updateCart(cart.value)
-
-        // Update cart items in database
         const aggregatedCartItems = cartItems.value.map((item) => ({
           ...item,
           cartId: cart.value!.id,
         }))
-        await updateCartItems(aggregatedCartItems)
+
+        if (user.value) {
+          await Promise.all([
+            updateCart(cart.value),
+            updateCartItems(aggregatedCartItems),
+          ])
+        }
       } catch (error) {
+        toast({
+          title: 'Error updating cart',
+          description: (error as Error).message,
+        })
         console.error('Error updating cart:', error)
       }
     }
@@ -86,15 +94,18 @@ export const useCartStore = defineStore(
       const currentCartItems = [...cartItems.value]
       const removedItem = currentCartItems.splice(index, 1)[0]
       cartItems.value = [...currentCartItems]
-      await createOrUpdateCart()
+      createOrUpdateCart()
 
-      // Delete item from database
       if (removedItem.id) {
         const { error } = await supabase
           .from('cartItem')
           .delete()
           .eq('id', removedItem.id)
         if (error) {
+          toast({
+            title: 'Error deleting cart item',
+            description: error.message,
+          })
           console.error('Error deleting cart item:', error)
         }
       }
@@ -103,11 +114,15 @@ export const useCartStore = defineStore(
     async function clearCart() {
       if (cart.value) {
         try {
-          Promise.all([
-            await deleteCart(cart.value.id as string),
-            await deleteCartItems(cart.value.id as string),
+          await Promise.all([
+            deleteCart(cart.value.id as string),
+            deleteCartItems(cart.value.id as string),
           ])
         } catch (error) {
+          toast({
+            title: 'Error clearing cart',
+            description: (error as Error).message,
+          })
           console.error('Error clearing cart:', error)
         }
       }
@@ -136,26 +151,20 @@ export const useCartStore = defineStore(
 
     async function syncCartWithUser() {
       try {
-        // First, try to fetch the user's existing cart from the database
         const existingCart = await fetchCartByUserId(user.value?.id as string)
 
         if (existingCart) {
-          // If a cart exists in the database, use it
           cart.value = existingCart
-          // Fetch cart items for this cart
           const items = await fetchCartItemsByCartId(existingCart.id)
-
           cartItems.value = items || []
         } else if (cart.value) {
-          // If no cart in database but we have a local cart, update it with user ID
-          await createOrUpdateCart()
+          createOrUpdateCart()
         }
       } catch (error) {
         console.error('Error syncing cart with user:', error)
       }
     }
 
-    // Watch for user changes
     watch(
       user,
       async (newUser) => {
