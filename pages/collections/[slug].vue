@@ -114,17 +114,21 @@ async function fetchTotalProducts() {
 }
 
 async function fetchProducts() {
-  if (products.value.length >= (totalProducts.value ?? 0)) {
-    return
-  }
-  isLoading.value = true
+  try {
+    if (products.value.length >= (totalProducts.value ?? 0)) {
+      return
+    }
+    isLoading.value = true
 
-  const fetchedProducts = await getProductsByCategory(
-    category.value?.id ?? 0,
-    searchInfo,
-  )
-  products.value = [...products.value, ...fetchedProducts]
-  isLoading.value = false
+    const fetchedProducts = await getProductsByCategory(
+      category.value?.id ?? 0,
+      searchInfo,
+    )
+    products.value = [...products.value, ...fetchedProducts]
+    isLoading.value = false
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 async function fetchData() {

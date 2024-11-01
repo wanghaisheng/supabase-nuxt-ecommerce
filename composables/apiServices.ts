@@ -1,3 +1,4 @@
+import { useToast } from '~/components/ui/toast'
 import type { TablesInsert } from '~/types/database.types'
 import type { CollectionSearchParams } from '~/types/search.types'
 import { SortBy } from '~/types/search.types'
@@ -8,6 +9,7 @@ type Cart = TablesInsert<'cart'>
 
 export const useApiServices = () => {
   const supabase = useSupabaseClient()
+  const { toast } = useToast()
 
   async function getProductsByCategory(
     categoryId: number,
@@ -65,7 +67,12 @@ export const useApiServices = () => {
 
     if (error) {
       console.error(error)
-      return []
+      toast({
+        title: 'Error fetching products',
+        description: error.message,
+        variant: 'destructive',
+      })
+      throw error
     }
     return data.map((item) => item.products)
   }
@@ -77,6 +84,11 @@ export const useApiServices = () => {
       .eq('slug', slug)
     if (error) {
       console.error(error)
+      toast({
+        title: 'Error fetching category',
+        description: error.message,
+        variant: 'destructive',
+      })
     } else {
       return data[0]
     }
@@ -104,6 +116,11 @@ export const useApiServices = () => {
     const { count, error } = await query
     if (error) {
       console.error('Error fetching total products:', error)
+      toast({
+        title: 'Error fetching total products',
+        description: error.message,
+        variant: 'destructive',
+      })
       return 0
     }
     return count
@@ -116,6 +133,11 @@ export const useApiServices = () => {
       .eq('id', productId)
     if (error) {
       console.error('Error fetching product', error)
+      toast({
+        title: 'Error fetching product',
+        description: error.message,
+        variant: 'destructive',
+      })
       throw error
     }
     return data?.[0]
@@ -127,6 +149,11 @@ export const useApiServices = () => {
       .delete()
       .eq('cartId', cartId)
     if (itemsError) {
+      toast({
+        title: 'Error deleting cart items',
+        description: itemsError.message,
+        variant: 'destructive',
+      })
       throw itemsError
     }
   }
@@ -137,6 +164,11 @@ export const useApiServices = () => {
       .delete()
       .eq('id', cartId)
     if (cartError) {
+      toast({
+        title: 'Error deleting cart',
+        description: cartError.message,
+        variant: 'destructive',
+      })
       throw cartError
     }
   }
@@ -146,6 +178,11 @@ export const useApiServices = () => {
       .from('cartItem')
       .upsert(cartItems)
     if (itemsError) {
+      toast({
+        title: 'Error updating cart items',
+        description: itemsError.message,
+        variant: 'destructive',
+      })
       throw itemsError
     }
   }
@@ -153,6 +190,11 @@ export const useApiServices = () => {
   async function updateCart(cart: Cart) {
     const { error: cartError } = await supabase.from('cart').upsert([cart])
     if (cartError) {
+      toast({
+        title: 'Error updating cart',
+        description: cartError.message,
+        variant: 'destructive',
+      })
       throw cartError
     }
   }
@@ -164,6 +206,11 @@ export const useApiServices = () => {
       .eq('user_id', userId)
     if (error) {
       console.error(error)
+      toast({
+        title: 'Error fetching wishlist',
+        description: error.message,
+        variant: 'destructive',
+      })
       throw error
     }
     return data
@@ -178,6 +225,11 @@ export const useApiServices = () => {
 
     if (error) {
       console.error('Error deleting wishlist item:', error)
+      toast({
+        title: 'Error deleting wishlist item',
+        description: error.message,
+        variant: 'destructive',
+      })
       throw error
     }
   }
@@ -188,6 +240,11 @@ export const useApiServices = () => {
       .insert([{ user_id: userId, product_id: productId }])
     if (error) {
       console.error('Error adding to wishlist:', error)
+      toast({
+        title: 'Error adding to wishlist',
+        description: error.message,
+        variant: 'destructive',
+      })
       throw error
     }
   }
@@ -200,6 +257,11 @@ export const useApiServices = () => {
 
     if (error) {
       console.error('Error fetching cart items:', error)
+      toast({
+        title: 'Error fetching cart items',
+        description: error.message,
+        variant: 'destructive',
+      })
       throw error
     }
     return data
@@ -216,6 +278,11 @@ export const useApiServices = () => {
 
     if (error && error.code !== 'PGRST116') {
       console.error('Error fetching cart:', error)
+      toast({
+        title: 'Error fetching cart',
+        description: error.message,
+        variant: 'destructive',
+      })
       throw error
     }
     return data
