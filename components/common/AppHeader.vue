@@ -7,10 +7,15 @@ import {
   HeartIcon,
 } from 'lucide-vue-next'
 import { useCartStore } from '~/store/cart'
+import type { Tables } from '~/types/database.types'
+type Product = Tables<'products'>
 
 const searchKey = ref('')
 const mobileMenuOpen = ref(false)
 const user = useSupabaseUser()
+const products = ref<Product[]>([])
+
+const { searchProduct } = useApiServices()
 
 const links = ref([
   { to: '/', label: 'HOME' },
@@ -45,6 +50,20 @@ const navigateToUser = () => {
 const navigateToWishlist = () => {
   navigateTo('/wishlist')
 }
+
+watchDebounced(
+  searchKey,
+  async (value) => {
+    if (value.length > 2) {
+      products.value = await searchProduct(value)
+    } else {
+      products.value = []
+    }
+  },
+  {
+    debounce: 300,
+  },
+)
 </script>
 
 <template>
@@ -55,6 +74,7 @@ const navigateToWishlist = () => {
           <CommonAppIcon class="h-8 w-auto sm:h-10" />
           <div class="hidden sm:block mx-4 lg:mx-8 flex-1">
             <CommonAppSearchBar v-model="searchKey" class="w-full" />
+            {{ products }}
           </div>
         </div>
         <div class="flex items-center">
