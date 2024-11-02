@@ -166,7 +166,7 @@ watch(
   },
 )
 
-await fetchData()
+fetchData()
 
 onMounted(() => {
   window.addEventListener('scroll', debouncedHandleScroll)
