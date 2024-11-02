@@ -1,3 +1,4 @@
+import type { PostgrestError } from '@supabase/supabase-js'
 import { useToast } from '~/components/ui/toast'
 import type { TablesInsert } from '~/types/database.types'
 import type { CollectionSearchParams } from '~/types/search.types'
@@ -10,6 +11,13 @@ type Cart = TablesInsert<'cart'>
 export const useApiServices = () => {
   const supabase = useSupabaseClient()
   const { toast } = useToast()
+
+  const apiError = (error: PostgrestError) => {
+    return createError({
+      message: error.message,
+      statusCode: 400,
+    })
+  }
 
   async function getProductsByCategory(
     categoryId: number,
@@ -72,7 +80,10 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      throw error
+      throw createError({
+        message: error.message,
+        statusCode: 400,
+      })
     }
     return data.map((item) => item.products)
   }
@@ -89,6 +100,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
+      throw apiError(error)
     } else {
       return data[0]
     }
@@ -121,7 +133,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      return 0
+      throw apiError(error)
     }
     return count
   }
@@ -138,7 +150,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      throw error
+      throw apiError(error)
     }
     return data?.[0]
   }
@@ -169,7 +181,7 @@ export const useApiServices = () => {
         description: cartError.message,
         variant: 'destructive',
       })
-      throw cartError
+      throw apiError(cartError)
     }
   }
 
@@ -183,7 +195,7 @@ export const useApiServices = () => {
         description: itemsError.message,
         variant: 'destructive',
       })
-      throw itemsError
+      throw apiError(itemsError)
     }
   }
 
@@ -195,7 +207,7 @@ export const useApiServices = () => {
         description: cartError.message,
         variant: 'destructive',
       })
-      throw cartError
+      throw apiError(cartError)
     }
   }
 
@@ -211,7 +223,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      throw error
+      throw apiError(error)
     }
     return data
   }
@@ -230,7 +242,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      throw error
+      throw apiError(error)
     }
   }
 
@@ -245,7 +257,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      throw error
+      throw apiError(error)
     }
   }
 
@@ -262,7 +274,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      throw error
+      throw apiError(error)
     }
     return data
   }
@@ -283,7 +295,7 @@ export const useApiServices = () => {
         description: error.message,
         variant: 'destructive',
       })
-      throw error
+      throw apiError(error)
     }
     return data
   }
