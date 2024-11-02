@@ -19,8 +19,22 @@ export default () => {
       .oneOf([yup.ref('password')], 'Passwords must match'),
   })
 
+  const userInfoSchema = yup.object({
+    firstName: yup
+      .string()
+      .required('First name is required')
+      .min(2, 'First name must be at least 2 characters')
+      .max(50, 'First name must be less than 50 characters'),
+    lastName: yup
+      .string()
+      .required('Last name is required')
+      .min(2, 'Last name must be at least 2 characters')
+      .max(50, 'Last name must be less than 50 characters'),
+  })
+
   return {
     loginSchema,
     signupSchema,
+    userInfoSchema,
   }
 }
